@@ -59,7 +59,8 @@ module Microcomputer
    output        sdCS,
    output        sdMOSI,
    input         sdMISO,
-   output        sdSCLK
+   output        sdSCLK,
+   output [7:0]     port_a
    );
 
    wire          n_WR;
@@ -79,6 +80,7 @@ module Microcomputer
    wire          n_basRomCS;
    wire [7:0]    basRomData;
    wire          n_interface1CS;
+   wire          n_interfacePA;
    wire [7:0]    interface1DataOut;
    wire          n_interface2CS;
    wire [7:0]    interface2DataOut;
@@ -229,6 +231,15 @@ module Microcomputer
       .n_rts()
       );
 
+   port pa
+     (
+      .n_reset(n_reset),
+      .n_wr(n_interfacePA | n_ioWR),
+      .dataIn(cpuDataOut),
+      .out    (port_a)
+      );
+
+
 `ifdef include_video
    SBCTextDisplayRGB io2
      (
@@ -293,11 +304,16 @@ module Microcomputer
    // 2 Bytes $82-$83
    assign n_interface2CS = cpuAddress[7:1] == 7'b 1000001 && (n_ioWR == 1'b 0 || n_ioRD == 1'b 0) ? 1'b 0 : 1'b 1;
 
+   // 1 Byte $84
+   assign n_interfacePA = cpuAddress[7:0] == 8'b 10000100 ? 1'b 0 : 1'b 1;
+
    // 8 Bytes $88-$8F
    assign n_sdCardCS = cpuAddress[7:3] == 5'b 10001 && (n_ioWR == 1'b 0 || n_ioRD == 1'b 0) ? 1'b 0 : 1'b 1;
 
    // Always enabled
    assign n_externalRamCS = 1'b0;
+
+
 
    // ____________________________________________________________________________________
    // BUS ISOLATION GOES HERE

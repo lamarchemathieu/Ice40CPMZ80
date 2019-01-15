@@ -104,3 +104,17 @@ set_io vSync        7 # PMOD29 = PMOD  7/8 pin 10
 
 set_io videoSync   21 # PMOD43 PMOD 11/12 pin 5
 set_io video       22 # PMOD42 PMOD 11/12 pin 7
+
+
+
+#pmod 4
+set_io port_a[0] 104 # c4
+set_io port_a[1] 101 # c2
+set_io port_a[2] 98 # c0
+set_io port_a[3] 96 # i_rx
+
+#pmod 2
+set_io port_a[4] 95 # rd7
+set_io port_a[5] 93 # rd5
+set_io port_a[6] 90 # rd3
+set_io port_a[7] 87 # rd1

@@ -9,7 +9,7 @@ echo building ${release}
 rm -rf build
 mkdir -p build
 
-for board in blackice blackice2
+for board in blackice2
 do
 
     echo building ${board}
