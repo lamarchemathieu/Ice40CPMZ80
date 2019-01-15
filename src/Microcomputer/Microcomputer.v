@@ -231,8 +231,9 @@ module Microcomputer
       .n_rts()
       );
 
-   port pa
+   ssd pa
      (
+      .clk(cpuClock),
       .n_reset(n_reset),
       .n_wr(n_interfacePA | n_ioWR),
       .dataIn(cpuDataOut),
