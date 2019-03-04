@@ -95,6 +95,8 @@ module Microcomputer
    reg           clk = 0;
    wire          driveLED;
 
+   reg [16:0] divFreq10M;
+
 `ifdef blackice2
    assign n_sRamUB  = 0;
    assign n_sRamLB  = 0;
@@ -210,6 +212,16 @@ module Microcomputer
    wire [7:0] data_pins_in = sramData;
 `endif
 
+
+   always @(posedge cpuClock) begin
+      if (n_reset == 1'b 0) begin
+         divFreq10M <= 17'b0;         
+      end
+      else begin
+         divFreq10M <= divFreq10M + 1;
+      end
+   end
+
    // ____________________________________________________________________________________
    // INPUT/OUTPUT DEVICES GO HERE
 
@@ -233,7 +245,7 @@ module Microcomputer
 
    ssd pa
      (
-      .clk(cpuClock),
+      .clk(divFreq10M[16]),
       .n_reset(n_reset),
       .n_wr(n_interfacePA | n_ioWR),
       .dataIn(cpuDataOut),
